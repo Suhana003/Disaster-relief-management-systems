@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- font awesome link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- css file styles.css -->
+    <link rel="stylesheet" href="{% static 'relief/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+     <style>
+    /* body { font-family: Arial, sans-serif; text-align: center; padding: 50px; } */
+        .containers { width: 300px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; }
+    </style> 
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark pt-2" >
+        <div class="container">
+            <a class="navbar-brand text-dark" style="font-size:50px;" href="#">
+                <img src="{% static 'relief/images//logo.jpg' %}" alt="Logo" style="height: 150px;">
+                Disaster Relief
+              </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto navi">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Services
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="#">Action</a></li>
+                          <li><a class="dropdown-item" href="#">Another Action</a></li>
+                          <li><a class="dropdown-item" href="#">Something Else Here</a></li>
+                        </ul>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/relief/report/">Report</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/relief/disasters/">view</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/relief/news/">Disaster News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'about' %}">About Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <h2 class="text-center">Donate Now</h2>
+    <div class="containers">
+        <label>Card Number:</label>
+        <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
+        
+        <label>Expiry Date:</label>
+        <input type="text" id="expiry" placeholder="MM/YY">
+        
+        <label>CVV:</label>
+        <input type="text" id="cvv" placeholder="123">
+        
+        <label>Email:</label>
+        <input type="email" id="email" placeholder="example@gmail.com">
+
+        <label>Phone:</label>
+        <input type="number" id="number" placeholder="1234567890">
+        <label>Amount</label>
+        <input type="number" id="amount" placeholder="In &#8377;">
+
+
+        <button id="pay-button">Donate</button>
+    </div>
+
+    <script>
+        document.getElementById("pay-button").addEventListener("click", function() {
+            let email = document.getElementById("email").value;
+
+            if (!email) {
+                alert("Please enter a valid email.");
+                return;
+            }
+
+            fetch("{% url 'process_payment' %}", {  // Send data to Django view
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}" // Include CSRF token for security
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);  // Show success message
+                window.location.href = "{% url 'thank_you' %}";  
+            })
+            .catch(error => {
+                alert("Error processing donation.");
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>
+ 

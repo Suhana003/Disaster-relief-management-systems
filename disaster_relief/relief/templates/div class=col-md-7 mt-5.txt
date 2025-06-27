@@ -1,0 +1,30 @@
+<div class="col-md-7 mt-5">
+                <h4 class="skilltype skills2">Streaming workflows with microsoft 365</h4>
+                <hr class="line">
+                <h4 class="skills2">Clear consice and Impactful communication</h4>
+                <hr class="line">
+                <h4 class="skills2">Presentation Expertize</h4>
+                <hr class="line">
+                <h4 class="skills2">Novice Calligrapher</h4>
+                <hr class="line">
+                <h4 class="skills2">Socially Fluent</h4>
+                <hr class="line">
+                <h4 class="skills2">Quick to acquire new Knowledge</h4>
+                <hr class="line">
+</div>
+        </div>
+<style>
+.skilltype{
+        font-size: 35px;
+        margin-top: 70px;
+        margin-left: 50px;
+    }
+    .skills2{
+        font-size: 35px;
+        
+        margin-left: 50px;
+    }
+    .line{
+        color:red;
+    }
+</style>
